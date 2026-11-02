@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 probs = [0.10, 0.50, 0.60, 0.80, 0.10,
          0.25, 0.60, 0.45, 0.75, 0.65] # adjust and play around with later
 N_steps = 500
-N_experiments = 400
+N_experiments = 1000
 eps = 0.1
-alpha = 0.1
+alpha = 0.3
 save_fig = True # save in same directory
 output_dir = os.path.join(os.getcwd(), "output")
 
@@ -51,11 +51,6 @@ class Agent:
     def update_Q(self, action, reward):
         self.n[action] += 1
         step = (1.0/self.n[action]) if self.alpha is None else self.alpha
-        # self.Q[action] += (1.0/self.n[action]) * (reward - self.Q[action])
-        # what happens if we write a fixed percentage rather than (1.0/self.n[action])? 
-        # fixed percentage represents a robot coping with a drifting environment by eventually "forgetting" the outcomes from previous actions
-        # this lets the agent adapt to changing envrionemtns 
-        # each new result increases or decreases the agent's guess about the probability of getting a reward by alpha*100% of the gap between the current guess and reward
         self.Q[action] += step * (reward - self.Q[action])
 
     def get_action(self):
@@ -91,7 +86,7 @@ agents = {
 }
 worlds = {
     "Steady world (change = 0)":      0.0,
-    "Changing world (change = 0.01)": 0.05,
+    "Changing world (change = 0.01)": 0.03,
 }
 
 def average_rewards(make_agent, change):
@@ -101,13 +96,12 @@ def average_rewards(make_agent, change):
         R += rewards
     return R/N_experiments
 
-
     
 steady_average = average_rewards(make_average_agent, 0.0)
 steady_fixed = average_rewards(make_fixed_step_agent, 0.0)
 
-changing_average = average_rewards(make_average_agent, 0.05)
-changing_fixed = average_rewards(make_fixed_step_agent, 0.05)
+changing_average = average_rewards(make_average_agent, 0.03)
+changing_fixed = average_rewards(make_fixed_step_agent, 0.03)
 
 os.makedirs(output_dir, exist_ok = True)
 
@@ -131,8 +125,15 @@ plt.grid()
 plt.savefig(os.path.join(output_dir, "changing_world.png"), bbox_inches = "tight")
 plt.close()
 
-# testing the world's change
-# env = Environment(probs, 0.05)
-# for _ in range(500):
-#     env.steps(0)
-# print(np.round(env.probs, 2))
+
+print("Sensitivity to change size: when a constant overtakes 1/n ")
+for change in [0.0, 0.01, 0.03, 0.05, 0.1]:
+    avg = average_rewards(make_average_agent, change)
+    fixed = average_rewards(make_fixed_step_agent, change)
+    print(change, ": ", avg[-100:].mean(), fixed[-100:].mean())
+
+print("Sensitivity to step size: finding the best balance for the change level")
+for alpha in [0.01, 0.05, 0.1, 0.3, 0.5]:
+    fixed = average_rewards(make_fixed_step_agent, 0.05)
+    print(alpha, ": ", fixed[-100:].mean())
+

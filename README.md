@@ -24,7 +24,7 @@ Where:
 How can an agent adapt to a changing environment when it can only learn by trial an error? In this case, relying on old data from several trials ago may not necessarily be beneficial compared to a consistent, steady environment. To simulate this, I ran an agent in a steady world, where the arms' win rates never change, and another in a changing world.
 
 ## Setup
-The only difference between the two agents is the "step" portion. The agent that takes account of every single result equally (average) has a step of 1/n. The agent that focuses on the recent results (fixed)  has a constant step size. 
+The only difference between the two agents is the "step" portion. The agent that takes account of every single result equally (average) has a step of 1/n. The agent that focuses on the recent results (fixed)  has a constant step size. In other words, the fixed step size represents an agent coping with a changing environment by eventually "forgetting" the outcomes from previous actions. 
 
 I then ran both agents in the steady world and in the changing world. The agent never sees the true win rates. It only sees wins and losses, so it has to notice the change from its own results.
 
@@ -32,6 +32,28 @@ I then ran both agents in the steady world and in the changing world. The agent 
 In the steady world, the average agent is ahead throughout, whereas in the changing world, the fixed agent eventually took the lead. 
 The graph of the results can be viewed in steady_world.png and changing_world.png
 Additionally, the results came from one seed, so it is worth rechecking with other seed sizes. Through these results, I learned that a plain average assumes the world holds still. When the world changes, old data becomes misleading and the average is slow to adjust. A fixed step size trades accuracy for adaptability, as forgets stale results, but it is jittery even when nothing changes. Furthermore, averaging over many games matters. A single game is mostly luck, and small gaps between curves are hard to trust when there are few games.
+
+### Sensitivity to change size
+| Change (std dev) | Average (1/n) | Fixed step |
+|---|---|---|
+| 0 | [ 0.74607 ] | [ 0.71003 ] |
+| 0.01 | [ 0.76979 ] | [ 0.78079 ] |
+| 0.03 | [ 0.67995 ] | [ 0.75774 ] |
+| 0.05 | [ 0.6308 ] | [ 0.72635 ] |
+| 0.1 | [ 0.58763 ] | [ 0.67762 ] |
+
+The fixed step overtakes the 1/n step when the change = 0.03 
+
+### Sensitivity to step size
+| Alpha | Avg reward (change = 0.03) |
+|---|---|
+| 0.01 | [ 0.50863 ] |
+| 0.05 | [ 0.58354 ] |
+| 0.1 | [ 0.66323 ] |
+| 0.3 | [ 0.72937 ] |
+| 0.5 | [ 0.71951 ] |
+
+Best alpha at change: 0.3
 
 ## How to run
 Run

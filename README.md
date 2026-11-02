@@ -42,16 +42,16 @@ Additionally, the results came from one seed, so it is worth rechecking with oth
 | 0.05 | [ 0.6308 ] | [ 0.72635 ] |
 | 0.1 | [ 0.58763 ] | [ 0.67762 ] |
 
-The fixed step overtakes the 1/n step when the change = 0.03 
+The fixed step overtakes the 1/n step when the change = 0.01 
 
 ### Sensitivity to step size
-| Alpha | Avg reward (change = 0.03) |
+| Alpha | Avg reward (change = 0.01) |
 |---|---|
-| 0.01 | [ 0.50863 ] |
-| 0.05 | [ 0.58354 ] |
-| 0.1 | [ 0.66323 ] |
-| 0.3 | [ 0.72937 ] |
-| 0.5 | [ 0.71951 ] |
+| 0.01 | [ 0.50248 ] |
+| 0.05 | [ 0.59377 ] |
+| 0.1 | [ 0.66383 ] |
+| 0.3 | [ 0.72806 ] |
+| 0.5 | [ 0.72141 ] |
 
 Best alpha at change: 0.3
 
@@ -64,7 +64,7 @@ python multi_armed_bandit.py
 The plots are saved to the output folder. 
 
 ## Limitations and next steps
-The win rates and change are randomly-generated numbers in a simulation, which showcase the learning mechanics but are not necessarily solutions to a real-world problem. The next step is to add a UCB agent, track regret, and extend to a contextual bandit where the best arm is dependent on what the agent observes. 
+The win rates and change are randomly generated numbers in a simulation, which showcase the learning mechanics but are not necessarily solutions to a real-world problem. The next step is to add a UCB agent, track regret, and extend to a contextual bandit where the best arm is dependent on what the agent observes. 
 
 # Acknowledgements
 This project builds on the epsilon-greedy multi-armed bandit by Anson Wong (ankonzoid): https://github.com/ankonzoid/LearningX/blob/master/classical_RL/multiarmed_bandit/multiarmed_bandit.py

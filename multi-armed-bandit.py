@@ -86,7 +86,7 @@ agents = {
 }
 worlds = {
     "Steady world (change = 0)":      0.0,
-    "Changing world (change = 0.01)": 0.03,
+    "Changing world (change = 0.01)": 0.01,
 }
 
 def average_rewards(make_agent, change):
@@ -100,8 +100,8 @@ def average_rewards(make_agent, change):
 steady_average = average_rewards(make_average_agent, 0.0)
 steady_fixed = average_rewards(make_fixed_step_agent, 0.0)
 
-changing_average = average_rewards(make_average_agent, 0.03)
-changing_fixed = average_rewards(make_fixed_step_agent, 0.03)
+changing_average = average_rewards(make_average_agent, 0.01)
+changing_fixed = average_rewards(make_fixed_step_agent, 0.01)
 
 os.makedirs(output_dir, exist_ok = True)
 
